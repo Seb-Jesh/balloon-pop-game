@@ -1,0 +1,18 @@
+body {
+    background-color: wheat;
+}
+
+.balloon {
+    height: 120px;
+    width: 100px;
+    background-color: blue;
+    border-radius: 50%;
+}
+
+.hidden {
+    display: none;
+}
+
+#inflate-btn {
+    margin: 20px;
+}
