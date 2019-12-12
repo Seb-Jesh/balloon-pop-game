@@ -1,25 +1,26 @@
-let startBtn = document.getElementById("start-btn");
-let inflateBtn = document.getElementById("inflate-btn");
+let clockCount = document.getElementById("time-count");
 
 // #region Game Logic & Data
 let buttonClick = 0;
-let height = 120;
-let width = 100;
+let height = 0;
+let width = 0;
 let heightRate = 12;
 let widthRate = 10;
-let maxSize = 240;
+let maxSize = 300;
 let currentPopCounter = 0;
 let highestPopCount = 0;
-let gameLength = 9000;
+let gameLength = 18000;
 let clockId;
 let timeRemaining;
 let currentPlayer = {};
-let clockCount = document.getElementById("time-count");
+let currentColor = "blue";
+let balloonColors = ["red", "indigo", "green", "blue"];
 
 function startGame() {
+    resetGame();
     currentPopCounter = 0;
-    startBtn.setAttribute("disabled", true);
-    inflateBtn.removeAttribute("disabled");
+    document.getElementById("game-controls").classList.add("hidden");
+    document.getElementById("game-stats").classList.remove("hidden");
     drawtoScreen();
     startClock();
     setTimeout(stopGame, gameLength);
@@ -44,21 +45,33 @@ function inflate() {
     buttonClick++;
     height += heightRate; 
     width += widthRate;
-    if(height >= maxSize) {
-        console.log("Pop the Balloon");
-        height = 120;
-        width = 100;
-        buttonClick = 0;
-        currentPopCounter++;
-    }
+    balloonPopped();
     drawtoScreen();
+}
+
+function balloonPopped() {
+    if(height >= maxSize) {
+        document.getElementById("pop-sound").play();
+        let balloonInflate = document.getElementById("balloon");
+        balloonInflate.classList.remove(currentColor);
+        randomColor();
+        balloonInflate.classList.add(currentColor);
+        currentPopCounter++;
+        resetGame();
+    }
 } 
+
+function randomColor() {
+   let i = Math.floor(Math.random() * balloonColors.length);
+   currentColor = balloonColors[i];
+}
 
 function drawtoScreen() {
     let balloonInflate = document.getElementById("balloon");
     let clickCount = document.getElementById("click-count");
     let popCount = document.getElementById("pop-count");
     let highPopCount = document.getElementById("high-pop-count");
+    let playerNameDisplay = document.getElementById("player-name");
     
     balloonInflate.style.height = height + "px";
     balloonInflate.style.width = width + "px";
@@ -66,17 +79,16 @@ function drawtoScreen() {
     clickCount.textContent = buttonClick;
     popCount.textContent = currentPopCounter;
     highPopCount.textContent = currentPlayer.topScore;
+    playerNameDisplay.textContent = currentPlayer.name;
 }
 
 function stopGame() {
     //alert("Your time has elapsed!");
 
-        height = 120;
-        width = 100;
-        buttonClick = 0;
+        resetGame();
         
-        inflateBtn.setAttribute("disabled", true);
-        startBtn.removeAttribute("disabled");
+        document.getElementById("game-stats").classList.add("hidden");
+        document.getElementById("game-controls").classList.remove("hidden");
 
         if(currentPopCounter > currentPlayer.topScore) {
             currentPlayer.topScore = currentPopCounter;
@@ -86,6 +98,12 @@ function stopGame() {
         stopClock();
         drawtoScreen();
 } 
+
+function resetGame() {
+    height = 12;
+    width = 10;
+    buttonClick = 0;
+}
 
 // #endregion Game Logic & Data
 

@@ -5,47 +5,71 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Balloon Pop Game</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <form id="player-form" onsubmit="setPlayer(event)">
+<header>
+    <div class="container shadow">
+        <img src="balloon-pop-logo.png" alt="ballon pop logo">
+    </div>
+</header>
+<main class="card container">
+    <form class="d-flex space" id="player-form" onsubmit="setPlayer(event)">
         <div>
-            <label for="name">Player Name:</label>
-            <input type="text" name="playerName" required>
+            <label for="name">
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                <span>Player Name: </span>
+            </label>
+            <input type="text" size="40" name="playerName" required>
         </div>
         <button type="submit">Submit</button>
     </form>
-
 <section id="game" class="game hidden">
-    <div>
+    <div class="card bg-dark text-light">
+      <div class="d-flex space">
+        <div>
+          <i class="fa fa-user-circle" aria-hidden="true"></i>
+          <span id="player-name">Player Name</span>
+        </div>
+        
+        <div>
+            <span>Highest Score:</span>
+            <span id="high-pop-count">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-controls" class="d-flex space-around mt-2">
+        <button id="start-btn" onclick="startGame()">Start Game</button>
         <button onclick="changePlayer()">Change Player</button>
     </div>
-
-    <div>
-        <button id="start-btn" onclick="startGame()">Start Game</button>
-    </div>
-
-    <button id="inflate-btn" onclick="inflate()" disabled>
-        Inflate 
-        <span id="click-count"></span>
-    </button>
-    <div>
-        <span>Balloons popped:</span>
-        <span id="pop-count">0</span>
-    </div>
-
-    <div>
-        <span>Highest Score:</span>
-        <span id="high-pop-count">0</span>
-    </div>
+    
+    <div id="game-stats" class="hidden">
+                
+        <div>
+            <span>Balloons popped:</span>
+            <span id="pop-count">0</span>
+        </div>
 
     <!-- Time counter -->
-    <div>
-        <span>Time Remaining:</span>
-        <span id="time-count">0</span>
-    </div>
+        <div>
+            <span>Time Remaining:</span>
+            <span id="time-count">0</span>
+        </div>
 
-    <div id="balloon" class="balloon"></div>
+        <div class="game-container d-flex">
+            <div class="pump" onclick="inflate()">
+                <div class="handle"></div>
+                <div class="pump-box">
+                    <span id="click-count"></span>
+                </div>
+            </div>
+            <div id="balloon" class="balloon"></div>
+            <audio id="pop-sound" src="burst.mp3"></audio>
+        </div>
+    </div>    
 </section>
+</main>
    <script src="main.js"></script>
 </body>
 </html>
