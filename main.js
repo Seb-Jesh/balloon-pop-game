@@ -21,6 +21,7 @@ function startGame() {
     currentPopCounter = 0;
     document.getElementById("game-controls").classList.add("hidden");
     document.getElementById("game-stats").classList.remove("hidden");
+    document.getElementById("scoreboard").classList.add("hidden");
     drawtoScreen();
     startClock();
     setTimeout(stopGame, gameLength);
@@ -89,6 +90,7 @@ function stopGame() {
         
         document.getElementById("game-stats").classList.add("hidden");
         document.getElementById("game-controls").classList.remove("hidden");
+        document.getElementById("scoreboard").classList.remove("hidden");
 
         if(currentPopCounter > currentPlayer.topScore) {
             currentPlayer.topScore = currentPopCounter;
@@ -97,6 +99,7 @@ function stopGame() {
 
         stopClock();
         drawtoScreen();
+        drawScoreboard();
 } 
 
 function resetGame() {
@@ -126,6 +129,7 @@ function setPlayer(event) {
    document.getElementById("game").classList.remove("hidden");
    form.classList.add("hidden");
    drawtoScreen();
+   drawScoreboard();
 }
 
 function changePlayer() {
@@ -143,3 +147,21 @@ function loadPlayers() {
         players = playersData;
     }
 }
+
+function drawScoreboard() {
+    let template = '';
+
+    players.sort((a, b) => b.topScore - a.topScore);
+
+    players.forEach(player => {
+        template += `
+        <div class="d-flex space">
+                <span>${player.name}</span>
+                <span>${player.topScore}</span>
+            </div>
+        `
+    })
+    document.getElementById("players").innerHTML = template
+}
+
+drawScoreboard();
